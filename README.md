@@ -7,3 +7,5 @@ To get a api key Goto telegram and search BotFather
 From the commands select /newbot and you're done
 
 You can upload this bot to heroku to run 24/7
+
+Note : I am not responsile for your illegal actions
