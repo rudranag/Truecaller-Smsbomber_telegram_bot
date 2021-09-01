@@ -13,7 +13,7 @@ api='Your Api key here'
 list1='/truecaller - contact info\n/smsbomber - multiple sms spam\n/anime - latest anime episodes\n/sourcecode - Bot SourceCode\n'
 
 logging.basicConfig(filename='bot.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+					level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 updater=Updater(api)
@@ -46,11 +46,11 @@ def Smsbomber(update: Update,context) -> None:
 
 # flags are used to determine which funtion should access phone number input
 def Number(update: Update,context) -> None:
-    global S,T
-    if T==1 and S==0:
-    	update.message.reply_text(truecaller.main(update.message.text))
-    elif T==0 and S==1:
-        update.message.reply_text(smsbomber.main(update.message.text))
+	global S,T
+	if T==1 and S==0:
+		update.message.reply_text(truecaller.main(update.message.text))
+	elif T==0 and S==1:
+		update.message.reply_text(smsbomber.main(update.message.text))
 		
 	
 def SourceCode(update: Update,context) -> None:
@@ -59,7 +59,7 @@ def SourceCode(update: Update,context) -> None:
 	
 # funtion to log errors		
 def error(update, context):
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
+	logger.warning('Update "%s" caused error "%s"', update, context.error)
 	
 dp.add_handler(CommandHandler('start', Start))
 dp.add_handler(CommandHandler('help', Help))
