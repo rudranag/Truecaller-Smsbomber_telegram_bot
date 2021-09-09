@@ -8,4 +8,4 @@ From the commands select /newbot and you're done
 
 You can upload this bot to heroku to run 24/7
 
-Note : I am not responsile for your illegal actions
+Please do use smsbomber for revenge purposes
