@@ -13,8 +13,7 @@ head={
 def main(num):
     global length
     info=[]
-    urlapi='https://search5-noneu.truecaller.com/v2/search?countryCode=IN&type=4&locAddr=&placement=SEARCHRESULTS%2CHISTORY%2CDETAILS&adId=1af646b1-8cdf-4e8a-b9d4-349f546890c5&encoding=json&q='
-    url=urlapi+str(num)
+    url='https://search5-noneu.truecaller.com/v2/search?countryCode=IN&type=4&locAddr=&placement=SEARCHRESULTS%2CHISTORY%2CDETAILS&adId=1af646b1-8cdf-4e8a-b9d4-349f546890c5&encoding=json&q='+str(num)
     req=requests.get(url,headers=head)
     data=req.json()
     try:        
@@ -37,7 +36,6 @@ def main(num):
     length=len(info)
     
     return info
-
 
 
 
