@@ -48,7 +48,9 @@ def Smsbomber(update: Update,context) -> None:
 def Number(update: Update,context) -> None:
 	global S,T
 	if T==1 and S==0:
-		update.message.reply_text(truecaller.main(update.message.text))
+		x=truecaller.main(update.message.text)
+		for i in range(truecaller.length):
+			update.message.reply_text(x[i])
 	elif T==0 and S==1:
 		update.message.reply_text(smsbomber.main(update.message.text))
 		
@@ -57,7 +59,7 @@ def SourceCode(update: Update,context) -> None:
 	print('Source code')
 	update.message.reply_text('https://github.com/rudranag/Truecaller-telegram_bot')
 	
-# funtion to log errors		
+# funtion to log errors         
 def error(update, context):
 	logger.warning('Update "%s" caused error "%s"', update, context.error)
 	
