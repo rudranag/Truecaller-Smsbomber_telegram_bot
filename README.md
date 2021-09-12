@@ -12,7 +12,7 @@ To use webhook version
 
 1. Create a webhook with link below
 
-     https://api.telegram.org/bot{ your api key }/setwebhook?url=https://{ your heroku app name }.herokuapp.com
+    https://api.telegram.org/bot{ your api key }/setwebhook?url=https://{ your heroku app name }.herokuapp.com
 
 when you see webhook was set message when you open the link then you succesfully setup the webhook
 
