@@ -22,7 +22,7 @@ go to main_webhook.py and add your api key and your heroku app name at line 76
 
 worker: python main.py
 
-To use webhook version change your Procfile to
+3.To use webhook version change your Procfile to
 
 web: python main_webhook.py 
 
