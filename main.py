@@ -81,6 +81,9 @@ def SourceCode(update: Update,context) -> None:
 def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
     
+def unknown(update, context):
+    update.message.reply_text("Sorry, I didn't understand that command.")
+    
 dp.add_handler(CommandHandler('start', Start))
 dp.add_handler(CommandHandler('help', Help))
 dp.add_handler(CommandHandler('truecaller', Truecaller))
@@ -88,6 +91,7 @@ dp.add_handler(CommandHandler('sourcecode', SourceCode))
 dp.add_handler(MessageHandler(Filters.regex(r'\d{10}'),Number))
 dp.add_handler(CommandHandler('smsbomber',Smsbomber))
 dp.add_handler(MessageHandler(Filters.contact, Contact))
+dp.add_handler(MessageHandler(Filters.command, unknown))
 dp.add_error_handler(error)
 updater.start_polling()
 updater.idle()
