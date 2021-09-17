@@ -14,9 +14,9 @@ To use webhook version
 
     https://api.telegram.org/bot{ your api key }/setwebhook?url=https://{ your heroku app name }.herokuapp.com
 
-when you see webhook was set message when you open the link then you succesfully setup the webhook
+ when you see webhook was set message when you open the link then you succesfully setup the webhook
 
-go to main_webhook.py and add your api key and your heroku app name at line 76
+ Go to main_webhook.py and add your api key at line 13 and your heroku app name at line 76
 
 2.To make it run on heroku without webhook the Procfile should be 
 
@@ -26,6 +26,6 @@ go to main_webhook.py and add your api key and your heroku app name at line 76
 
      web: python main_webhook.py 
 
-then type this command in your heroku cli if you encounter any error in logs
+Then type this command in your heroku cli if you encounter any error in logs(only for webhook version)
 
      heroku ps:scale web=1 -a your_heroku_app_name
