@@ -1,4 +1,4 @@
-# Truecaller-telegram_bot
+# Truecaller/Smsbomber-telegram_bot
 
 Add your telegram bot api key in main.py and you are good to go
 
