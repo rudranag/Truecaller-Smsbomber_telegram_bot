@@ -20,7 +20,7 @@ updater=Updater(api)
 dp=updater.dispatcher
 
 # /start calls this funtion
-def Start(update: Update, context) -> None:
+def Start(update: Update, context):
 	update.message.reply_text(f'Welcome {update.effective_user.first_name}')
 	update.message.reply_text('Click /help for more info')
 	print(update.effective_user.full_name)
