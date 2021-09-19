@@ -52,8 +52,7 @@ def Number(update: Update,context:CallbackContext) -> None:
 		message=update.message.reply_text('messages sent  ')
 		for i in range(1,count+1):
 			context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
-			print(i)
-			time.sleep(0.4)
+			time.sleep(0.5)
 				
 	global Flag
 	if Flag == 1:
@@ -77,8 +76,7 @@ def Contact(update,context: CallbackContext):
 		message=update.message.reply_text('messages sent  ')
 		for i in range(1,count+1):
 			context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
-			print(i)
-			time.sleep(0.4)
+			time.sleep(0.5)
 					
 	contact = update.effective_message.contact
 	phone_no = contact.phone_number
