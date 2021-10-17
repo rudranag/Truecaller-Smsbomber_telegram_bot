@@ -17,7 +17,7 @@ To use webhook version
 
 2.when you see webhook was set message when you open the link then you succesfully setup the webhook
 
-3.Go to main_webhook.py and add your api key at line 13 and your heroku app name at line 76
+3.Go to main_webhook.py and add your api key at line 13 and your heroku app name at line 124
 
 
 
@@ -29,6 +29,6 @@ To use webhook version
 
      web: python main_webhook.py 
 
-6.Then type this command in your heroku cli if you encounter any error in logs(only for webhook version)
+6.Then type this command in your heroku cli(only for webhook version)
 
      heroku ps:scale web=1 -a your_heroku_app_name
