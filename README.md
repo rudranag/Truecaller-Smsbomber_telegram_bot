@@ -67,7 +67,7 @@ The Procfile for Normal version of the bot should be.
 ```bash
     web: python main_webhook.py 
 ```
-For the webhook version you can to scale your dynos
+For the webhook version you need to scale your dynos
 
 ```bash
     heroku ps:scale web=1 -a your_heroku_app_name
