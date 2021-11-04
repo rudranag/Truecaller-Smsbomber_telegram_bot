@@ -1,5 +1,6 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters,CallbackContext
 from telegram import update,Update
+from telegram.ext.dispatcher import run_async
 import  logging,time
 from sub import truecaller
 from sub import smsbomber 
@@ -123,14 +124,14 @@ updater.start_webhook(listen="0.0.0.0",
                           url_path=api,
                 webhook_url='https://your_heroku_app_name.herokuapp.com/' + api)
 	
-dp.add_handler(CommandHandler('start', Start))
+dp.add_handler(CommandHandler('start', Start,run_async=True))
 dp.add_handler(CommandHandler('help', Help))
-dp.add_handler(CommandHandler('truecaller', Truecaller))
+dp.add_handler(CommandHandler('truecaller', Truecaller,run_async=True))
 dp.add_handler(CommandHandler('sourcecode', SourceCode))
-dp.add_handler(MessageHandler(Filters.regex(r'^\d{10}$'),Number))
+dp.add_handler(MessageHandler(Filters.regex(r'^\d{10}$'),Number,run_async=True))
 dp.add_handler(MessageHandler(Filters.regex(r'(\d{5}\s{1}\d{5})|(\d{3}-\d{3}-\d{4})|(\+\d{12})'),InvalidNumber))
-dp.add_handler(CommandHandler('smsbomber',Smsbomber))
-dp.add_handler(MessageHandler(Filters.contact, Contact))
+dp.add_handler(CommandHandler('smsbomber',Smsbomber,run_async=True))
+dp.add_handler(MessageHandler(Filters.contact, Contact,run_async=True))
 dp.add_handler(MessageHandler(Filters.command, unknown_command))
 dp.add_error_handler(error)
 updater.idle()
