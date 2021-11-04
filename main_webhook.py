@@ -14,7 +14,7 @@ Flag=0
 
 api='YOUR API KEY'
 
-help_txt='/truecaller - contact info\n/smsbomber - multiple sms spam\n/anime - latest anime episodes\n/sourcecode - Bot SourceCode\n'
+help_txt='/truecaller - contact info\n/smsbomber - multiple sms spam\n/sourcecode - Bot SourceCode\n'
 
 logging.basicConfig(filename='bot.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 					level=logging.INFO)
