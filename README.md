@@ -1,34 +1,82 @@
-# Truecaller/Smsbomber-telegram_bot
 
-Add your telegram bot api key in main.py and you are good to go
+# Truecaller and Smsbomber telegram bot
 
-To get a api key Goto telegram and search BotFather 
+This bot can provide you Truecaller and Smsbomber features using api requests
 
-From the commands select /newbot and give it a name and you're done
+Made using [python_telegram_bot](https://github.com/python-telegram-bot/python-telegram-bot)
 
-Now added webhook to make the bot little bit faster if it has more traffic
 
-To use webhook version 
+
+
+
+## Requirements
+
+
+You can Install requirements using
+```sh
+pip install -r requirements.txt
+```
+
+
+ 
+
+## Usage
+
+To get you bot Api Key
+
+Go to Telegram app and search '@BotFather' 
+
+Click on /newbot
+
+Give your bot a name and a username and your Done!
+
+Paste that api key in main.py line 12 and run the script.
+
+```bash
+    python main.py
+```
+
+## Heroku Guide For Normal Version
+
+To make your Bot run 24/7. You can host your bot on Heroku
+
+You can use this bot with and without webhooks
+
+
+#### Procfile (Normal version)
+
+The Procfile for Normal version of the bot should be.
+
+```bash
+    worker: python main.py
+```
+## Heroku Guide For Webhook Version
+
 
 1. Create a webhook with link below
 
-    https://api.telegram.org/bot{ your api key }/setwebhook?url=https://{ your heroku app name }.herokuapp.com
-    
+```bash
+   https://api.telegram.org/bot{ your api key }/setwebhook?url=https://{ your heroku app name }.herokuapp.com
+```
+2. You will see a success message saying webhook was setup
 
-2.when you see webhook was set message when you open the link then you succesfully setup the webhook
-
-3.Go to main_webhook.py and add your api key at line 13 and your heroku app name at line 124
+3. Go to main_webhook.py and add your api key at line 13 and your heroku app name at line 124
 
 
+#### Procfile (webhooks version)
+```bash
+    web: python main_webhook.py 
+```
+For the webhook version you can to scale your dynos
 
-4.To make it run on heroku without webhook the Procfile should be 
+```bash
+    heroku ps:scale web=1 -a your_heroku_app_name
+```
 
-     worker: python main.py
+## Notes
 
-5.To use webhook version change your Procfile to
+If you are new to heroku you can use the Normal version.
 
-     web: python main_webhook.py 
+You if dont know know how to use host a bot on heroku.
 
-6.Then type this command in your heroku cli(only for webhook version)
-
-     heroku ps:scale web=1 -a your_heroku_app_name
+Please find a tutorial on youtube
