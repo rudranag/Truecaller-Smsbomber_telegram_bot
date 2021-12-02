@@ -73,10 +73,3 @@ For the webhook version you need to scale your dynos
     heroku ps:scale web=1 -a your_heroku_app_name
 ```
 
-## Notes
-
-If you are new to heroku you can use the Normal version.
-
-You if dont know know how to use host a bot on heroku.
-
-Please find a tutorial on youtube
