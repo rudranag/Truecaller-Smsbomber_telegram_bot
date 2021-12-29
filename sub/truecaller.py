@@ -15,7 +15,7 @@ def main(num):
     req=requests.get(url,headers=head)
     data=req.json()
     if data:
-        name=data['data'][0]['name'] if data['data'][0]['name'] else None                
+        name=data['data'][0]['name'] if data['data'] else None                
         carrier=data['data'][0]['phones'][0]['carrier']  if data['data'][0]['phones'] else None
         email=data['data'][0]['internetAddresses'][0]['id']  if data['data'][0]['internetAddresses'] else None
         address=data['data'][0]['addresses'][0]['city']  if data['data'][0]['addresses'] else None
