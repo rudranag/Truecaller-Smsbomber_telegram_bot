@@ -1,10 +1,7 @@
 import requests
 import time
 import random
-block_list=[]
 def main(num):
-	if num in block_list:
-		return 'Fool yo fool'
 	bomb_urls = [
 		{
 			'url': 'https://api.apollo247.com/graphql',
