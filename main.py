@@ -1,9 +1,8 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters,CallbackContext
 from telegram import update,Update
 from telegram.ext.dispatcher import run_async
-import  logging,time,os
-from sub import truecaller
-from sub import smsbomber 
+import  logging,time
+from sub import truecaller,smsbomber,psql
 from threading import Thread
 
 Flag=0
@@ -18,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 updater=Updater(api)
 dp=updater.dispatcher
+db=psql.Database()
 
 # /start calls this funtion
 def Start(update: Update, context):
