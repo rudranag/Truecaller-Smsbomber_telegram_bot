@@ -1,39 +1,31 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters,CallbackContext
 from telegram import update,Update
 from telegram.ext.dispatcher import run_async
-import  logging,time
-from sub import truecaller
-from sub import smsbomber 
-from threading import Thread
-import os
+import  logging,time,os
+from sub import truecaller,smsbomber,databaseConnect
 
 PORT = int(os.environ.get('PORT', '8443'))
 
 Flag=0
 # flag is used to know where the input number should go 
 
-api='YOUR API KEY'
+#get tellegram bot api from environment variables
+api=os.environ.get('api_key')
 
-help_txt='/truecaller - contact info\n/smsbomber - multiple sms spam\n/sourcecode - Bot SourceCode\n'
-
+# create a log file
 logging.basicConfig(filename='bot.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 					level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+#initialize updater and dispatcher
 updater=Updater(api)
 dp=updater.dispatcher
+db=databaseConnect.Database()
 
 # /start calls this funtion
-def Start(update: Update, context) -> None:
+def Start(update: Update, context):
 	update.message.reply_text(f'Welcome {update.effective_user.first_name}')
-	update.message.reply_text('Click /help for more info')
-	print(update.effective_user.full_name)
-
 		
-# /help calls this funtion
-def Help(update: Update,context) -> None:
-	update.message.reply_text(help_txt)
-	Flag = 0
 
 # /truecaller calls this funtion
 def Truecaller(update: Update,context) -> None:
@@ -49,58 +41,105 @@ def Smsbomber(update: Update,context) -> None:
 		
 # flag is used to determine which funtion should access phone number input
 def Number(update: Update,context:CallbackContext) -> None:
-	def smsCount(count):
-		message=update.message.reply_text('messages sent  ')
-		for i in range(1,count+1):
-			context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
-			time.sleep(0.5)
-				
+	chat_id = update.message.chat_id
+	mobile_number  = update.message.text			
 	global Flag
 	if Flag == 1:
 		info=truecaller.main(update.message.text)
-		for i in range(truecaller.length):
-			update.message.reply_text(info[i])
+		for i in info:
+			update.message.reply_text(i)
 		Flag = 0
+		
 
 	elif Flag == 2:
-		t1=Thread(target=smsbomber.main,args=(update.message.text,))
-		t2=Thread(target=smsCount, args=(50,))
-		t1.start()
-		t2.start()
-		t1.join()
-		t2.join()
+
+		number_exists = db.check_before_bombing(mobile_number)
+
+		if number_exists:
+			update.message.reply_text('Sorry this number is protected')
+		else:
+			message=update.message.reply_text('messages sent  ')
+			for i in range(1,51):
+				time.sleep(0.4)
+				smsbomber.Api(mobile_number)
+				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
 		Flag = 0
 
-
+# this function is called when a contact is sent
 def Contact(update,context: CallbackContext):
-	def smsCount(count):
-		message=update.message.reply_text('messages sent  ')
-		for i in range(1,count+1):
-			context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
-			time.sleep(0.5)
-					
+
+	chat_id = update.message.chat_id					
 	contact = update.effective_message.contact
 	phone_no = contact.phone_number
 
 	if len(phone_no)==13:
-		phone=phone_no[3:] 
+		phoneNumber=phone_no[3:]
+	else:
+		phoneNumber=phone_no
 
 	global Flag
 	if Flag == 1:
+
 		info=truecaller.main(phone_no)
-		for i in range(truecaller.length):
-			update.message.reply_text(info[i])
-		Flag = 0
+		if info:
+			for i in info:
+				update.message.reply_text(i)
+		else:
+			update.message.reply_text('Sorry today\'s request limit has been reached')
 			
 	elif Flag == 2:
-		t1=Thread(target=smsbomber.main,args=(phone_no,))
-		t2=Thread(target=smsCount, args=(50,))
-		t1.start()
-		t2.start()
-		t1.join()
-		t2.join()
+
+		number_exists = db.check_before_bombing(phoneNumber)
+
+		if number_exists:
+			update.message.reply_text('Sorry this number is protected')
+		else:
+			message=update.message.reply_text('messages sent 0')
+			for i in range(1,51):
+				time.sleep(0.4)
+				smsbomber.Api(phoneNumber)
+				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
+
+
 		Flag = 0
-		
+
+# this will save your number and chat_id to database so it can check before bombing		
+def protect(update: Update, context: CallbackContext) -> None:
+    
+    chat_id = update.message.chat_id
+    
+    try:
+        mobileNo = context.args[0]
+
+        exists = db.check_if_exists(chat_id,mobileNo)
+
+        if mobileNo and exists:
+            update.message.reply_text(f'{mobileNo} is in protected list')
+
+        elif mobileNo and not exists:
+            db.protect_number(chat_id,mobileNo)
+            update.message.reply_text(f'{mobileNo} is protected')
+    except IndexError:
+        update.message.reply_text('Usage : /protect 9123456789')
+
+# deletes your number from database so no protection   
+def unprotect(update: Update, context: CallbackContext) -> None:
+    
+    chat_id = update.message.chat_id
+    
+    try:
+        mobileNo = context.args[0]
+        
+        if mobileNo:
+            count = db.unprotect_number(chat_id,mobileNo)
+            if count:
+                update.message.reply_text(f'{mobileNo} is unprotected')
+            else:
+                update.message.reply_text(f'Genjutsu of that level doesn\'t work on me')
+
+
+    except IndexError:
+        update.message.reply_text('Usage : /unprotect 9123456789')
 		
 def SourceCode(update: Update,context) -> None:
 	print('Source code')
