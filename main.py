@@ -58,7 +58,7 @@ def Number(update: Update,context:CallbackContext) -> None:
 			update.message.reply_text('Sorry this number is protected')
 		else:
 			message=update.message.reply_text('messages sent  ')
-			for i in range(1,6):
+			for i in range(1,51):
 				time.sleep(0.4)
 				smsbomber.Api(mobile_number)
 				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
@@ -93,8 +93,8 @@ def Contact(update,context: CallbackContext):
 		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
 		else:
-			message=update.message.reply_text('messages sent  ')
-			for i in range(1,6):
+			message=update.message.reply_text('messages sent 0')
+			for i in range(1,51):
 				time.sleep(0.4)
 				smsbomber.Api(phoneNumber)
 				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
