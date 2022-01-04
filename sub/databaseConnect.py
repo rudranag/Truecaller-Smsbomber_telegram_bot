@@ -91,35 +91,6 @@ class Database:
                 
         return count 
         
-
-    def get_protected_list(self):
-       
-        try:
-            connection = psycopg2.connect(user=self.username,
-                                          password=self.password,
-                                          host=self.host,
-                                          port=self.port,
-                                          database=self.dbname)
-            connection.autocommit = True
-            cursor = connection.cursor()
-
-            postgres_get_protected_list = """ select mobile from protected_list""" 
-            cursor.execute(postgres_get_protected_list)
-
-            result = [r[0] for r in cursor.fetchall()]
-            result = list(set(result))
-
-
-        except (Exception, psycopg2.Error) as error:
-            print("Error in update operation", error)
-            
-        finally:
-            if connection:
-                cursor.close()
-                connection.close()
-                
-        return result
-
             
 
     
