@@ -1,29 +1,29 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters,CallbackContext
 from telegram import update,Update
 from telegram.ext.dispatcher import run_async
-import  logging,time
-from sub import truecaller,smsbomber,psql
-from threading import Thread
+import  logging,time,os
+from sub import truecaller,smsbomber,databaseConnect
+
 
 Flag=0
 # flag is used to know where the input number should go 
 
-api=os.environ.get('api_token')
+#get tellegram bot api from environment variables
+api=os.environ.get('api_key')
 
-
+# create a log file
 logging.basicConfig(filename='bot.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 					level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+#initialize updater and dispatcher
 updater=Updater(api)
 dp=updater.dispatcher
-db=psql.Database()
+db=databaseConnect.Database()
 
 # /start calls this funtion
 def Start(update: Update, context):
 	update.message.reply_text(f'Welcome {update.effective_user.first_name}')
-	update.message.reply_text('Click /help for more info')
-
 		
 
 # /truecaller calls this funtion
@@ -40,13 +40,8 @@ def Smsbomber(update: Update,context) -> None:
 		
 # flag is used to determine which funtion should access phone number input
 def Number(update: Update,context:CallbackContext) -> None:
-	
-	def smsCount(count):
-		message=update.message.reply_text('messages sent  ')
-		for i in range(1,count+1):
-			context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
-			time.sleep(0.5)
-				
+	chat_id = update.message.chat_id
+	mobile_number  = update.message.text			
 	global Flag
 	if Flag == 1:
 		info=truecaller.main(update.message.text)
@@ -57,52 +52,56 @@ def Number(update: Update,context:CallbackContext) -> None:
 
 	elif Flag == 2:
 
-		protectedNumber = db.get_protected_list()
-		if update.message.text in protectedNumber:
+		number_exists = db.check_if_exists(chat_id,mobile_number)
+
+		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
 		else:
-			t1=Thread(target=smsbomber.main,args=(update.message.text,))
-			t2=Thread(target=smsCount, args=(50,))
-			t1.start()
-			t2.start()
-			t1.join()
-			t2.join()
+			message=update.message.reply_text('messages sent  ')
+			for i in range(1,6):
+				time.sleep(0.4)
+				smsbomber.Api(mobile_number)
+				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
 		Flag = 0
 
 # this function is called when a contact is sent
 def Contact(update,context: CallbackContext):
-	def smsCount(count):
-		message=update.message.reply_text('messages sent  ')
-		for i in range(1,count+1):
-			context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
-			time.sleep(0.5)
-					
+
+	chat_id = update.message.chat_id					
 	contact = update.effective_message.contact
 	phone_no = contact.phone_number
 
 	if len(phone_no)==13:
-		phone=phone_no[3:] 
+		phoneNumber=phone_no[3:]
+	else:
+		phoneNumber=phone_no
 
 	global Flag
 	if Flag == 1:
+
 		info=truecaller.main(phone_no)
-		for i in info:
-			update.message.reply_text(i)
-		
+		if info:
+			for i in info:
+				update.message.reply_text(i)
+		else:
+			update.message.reply_text('Sorry today\'s request limit has been reached')
 			
 	elif Flag == 2:
 
-		protectedNumber = db.get_protected_list()
-		if phone in protectedNumber:
+		number_exists = db.check_if_exists(chat_id,phoneNumber)
+
+		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
 		else:
-			t1=Thread(target=smsbomber.main,args=(phone,))
-			t2=Thread(target=smsCount, args=(50,))
-			t1.start()
-			t2.start()
-			t1.join()
-			t2.join()
+			message=update.message.reply_text('messages sent  ')
+			for i in range(1,6):
+				time.sleep(0.4)
+				smsbomber.Api(phoneNumber)
+				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
+
+
 		Flag = 0
+
 # this will save your number and chat_id to database so it can check before bombing		
 def protect(update: Update, context: CallbackContext) -> None:
     
@@ -114,7 +113,7 @@ def protect(update: Update, context: CallbackContext) -> None:
         exists = db.check_if_exists(chat_id,mobileNo)
 
         if mobileNo and exists:
-            update.message.reply_text(f'{mobileNo} is protected list')
+            update.message.reply_text(f'{mobileNo} is in protected list')
 
         elif mobileNo and not exists:
             db.protect_number(chat_id,mobileNo)
