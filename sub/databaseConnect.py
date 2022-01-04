@@ -90,6 +90,32 @@ class Database:
                 connection.close()
                 
         return count 
+
+    def check_before_bombing(self,mobile_number):
+        try:
+            connection = psycopg2.connect(user=self.username,
+                                          password=self.password,
+                                          host=self.host,
+                                          port=self.port,
+                                          database=self.dbname)
+            connection.autocommit = True
+            cursor = connection.cursor()
+
+            postgres_check_query = """ select * from protected_list where mobile=%s"""
+        
+            cursor.execute(postgres_check_query,(mobile_number,))
+            count = cursor.rowcount
+
+
+        except (Exception, psycopg2.Error) as error:
+            print("Error in update operation", error)
+            
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+                
+        return count 
         
             
 
