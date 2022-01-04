@@ -52,7 +52,7 @@ def Number(update: Update,context:CallbackContext) -> None:
 
 	elif Flag == 2:
 
-		number_exists = db.check_if_exists(chat_id,mobile_number)
+		number_exists = db.check_before_bombing(mobile_number)
 
 		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
@@ -88,7 +88,7 @@ def Contact(update,context: CallbackContext):
 			
 	elif Flag == 2:
 
-		number_exists = db.check_if_exists(chat_id,phoneNumber)
+		number_exists = db.check_before_bombing(phoneNumber)
 
 		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
