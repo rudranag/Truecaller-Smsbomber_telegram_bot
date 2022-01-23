@@ -30,7 +30,8 @@ Click on /newbot
 
 Give your bot a name and a username and your Done!
 
-Paste that api key in main.py line 12 and run the script.
+Add your api_key to environment variable and add it to line 12.
+or replace the line with api_key = actual api key
 
 ```bash
     python main.py
