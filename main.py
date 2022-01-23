@@ -25,7 +25,6 @@ db=databaseConnect.Database()
 def Start(update: Update, context):
 	update.message.reply_text(f'Welcome {update.effective_user.first_name}')
 		
-
 # /truecaller calls this funtion
 def Truecaller(update: Update,context) -> None:
 	update.message.reply_text('Enter a number without +91 or share contact')
@@ -49,11 +48,8 @@ def Number(update: Update,context:CallbackContext) -> None:
 			update.message.reply_text(i)
 		Flag = 0
 		
-
 	elif Flag == 2:
-
 		number_exists = db.check_before_bombing(mobile_number)
-
 		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
 		else:
@@ -66,11 +62,11 @@ def Number(update: Update,context:CallbackContext) -> None:
 
 # this function is called when a contact is sent
 def Contact(update,context: CallbackContext):
-
+	
 	chat_id = update.message.chat_id					
 	contact = update.effective_message.contact
 	phone_no = contact.phone_number
-
+	
 	if len(phone_no)==13:
 		phoneNumber=phone_no[3:]
 	else:
@@ -78,7 +74,6 @@ def Contact(update,context: CallbackContext):
 
 	global Flag
 	if Flag == 1:
-
 		info=truecaller.main(phone_no)
 		if info:
 			for i in info:
@@ -87,9 +82,7 @@ def Contact(update,context: CallbackContext):
 			update.message.reply_text('Sorry today\'s request limit has been reached')
 			
 	elif Flag == 2:
-
 		number_exists = db.check_before_bombing(phoneNumber)
-
 		if number_exists:
 			update.message.reply_text('Sorry this number is protected')
 		else:
@@ -99,43 +92,38 @@ def Contact(update,context: CallbackContext):
 				smsbomber.Api(phoneNumber)
 				context.bot.edit_message_text(chat_id=update.message.chat_id,message_id=message.message_id,text='messages sent ' + str(i))
 
-
 		Flag = 0
 
 # this will save your number and chat_id to database so it can check before bombing		
 def protect(update: Update, context: CallbackContext) -> None:
     
-    chat_id = update.message.chat_id
-    
+    chat_id = update.message.chat_id 
     try:
         mobileNo = context.args[0]
-
         exists = db.check_if_exists(chat_id,mobileNo)
-
+	
         if mobileNo and exists:
             update.message.reply_text(f'{mobileNo} is in protected list')
-
         elif mobileNo and not exists:
             db.protect_number(chat_id,mobileNo)
             update.message.reply_text(f'{mobileNo} is protected')
+		
     except IndexError:
         update.message.reply_text('Usage : /protect 9123456789')
 
 # deletes your number from database so no protection   
 def unprotect(update: Update, context: CallbackContext) -> None:
     
-    chat_id = update.message.chat_id
-    
+    chat_id = update.message.chat_id 
     try:
         mobileNo = context.args[0]
-        
+     
         if mobileNo:
             count = db.unprotect_number(chat_id,mobileNo)
             if count:
                 update.message.reply_text(f'{mobileNo} is unprotected')
             else:
                 update.message.reply_text(f'Genjutsu of that level doesn\'t work on me')
-
 
     except IndexError:
         update.message.reply_text('Usage : /unprotect 9123456789')
