@@ -2,8 +2,9 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters,Callba
 from telegram import update,Update
 from telegram.ext.dispatcher import run_async
 import  logging,time,os
-from sub import truecaller,smsbomber,databaseConnect
+from sub import truecaller,smsbomber
 
+protected_dict = {}
 Flag=0
 # flag is used to know where the input number should go 
 
@@ -11,7 +12,7 @@ Flag=0
 #api=os.environ.get('api_key')
 
 # add api key without environment variables
-api=YOUR_API_KEY
+api='1909514811:AAGpdMusSYvLCJELu8Re_hkeoKee9cLCqSs'
 
 # create a log file
 logging.basicConfig(filename='bot.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -21,7 +22,6 @@ logger = logging.getLogger(__name__)
 #initialize updater and dispatcher
 updater=Updater(api)
 dp=updater.dispatcher
-db=databaseConnect.Database()
 
 # /start calls this funtion
 def Start(update: Update, context):
@@ -51,8 +51,7 @@ def Number(update: Update,context:CallbackContext) -> None:
 		Flag = 0
 		
 	elif Flag == 2:
-		number_exists = db.check_before_bombing(mobile_number)
-		if number_exists:
+		if mobile_number in protected_dict:
 			update.message.reply_text('Sorry this number is protected')
 		else:
 			message=update.message.reply_text('messages sent  ')
@@ -84,8 +83,7 @@ def Contact(update,context: CallbackContext):
 			update.message.reply_text('Sorry today\'s request limit has been reached')
 			
 	elif Flag == 2:
-		number_exists = db.check_before_bombing(phoneNumber)
-		if number_exists:
+		if phoneNumber in protected_dict:
 			update.message.reply_text('Sorry this number is protected')
 		else:
 			message=update.message.reply_text('messages sent 0')
@@ -102,12 +100,12 @@ def protect(update: Update, context: CallbackContext) -> None:
     chat_id = update.message.chat_id 
     try:
         mobileNo = context.args[0]
-        exists = db.check_if_exists(chat_id,mobileNo)
+        
 	
-        if mobileNo and exists:
+        if mobileNo and mobileNo in protected_dict:
             update.message.reply_text(f'{mobileNo} is in protected list')
-        elif mobileNo and not exists:
-            db.protect_number(chat_id,mobileNo)
+        elif mobileNo and not (mobileNo in protected_dict):
+            protected_dict[mobileNo] = chat_id
             update.message.reply_text(f'{mobileNo} is protected')
 		
     except IndexError:
@@ -121,8 +119,8 @@ def unprotect(update: Update, context: CallbackContext) -> None:
         mobileNo = context.args[0]
      
         if mobileNo:
-            count = db.unprotect_number(chat_id,mobileNo)
-            if count:
+            if protected_dict.get(mobileNo) == chat_id:
+                protected_dict.pop(mobileNo)
                 update.message.reply_text(f'{mobileNo} is unprotected')
             else:
                 update.message.reply_text(f'Genjutsu of that level doesn\'t work on me')
