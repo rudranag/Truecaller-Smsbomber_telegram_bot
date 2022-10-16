@@ -1,3 +1,6 @@
+api='1909514811:AAGpdMusSYvLCJELu8Re_hkeoKee9cLCqSs'
+
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters,CallbackContext
 from telegram import update,Update
 from telegram.ext.dispatcher import run_async
@@ -12,7 +15,6 @@ Flag=0
 #api=os.environ.get('api_key')
 
 # add api key without environment variables
-api='1909514811:AAGpdMusSYvLCJELu8Re_hkeoKee9cLCqSs'
 
 # create a log file
 logging.basicConfig(filename='bot.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
