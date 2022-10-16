@@ -24,13 +24,13 @@ pip install -r requirements.txt
 
 To get you bot Api Key
 
-Go to Telegram app and search '@BotFather' 
+1. Go to Telegram app and search '@BotFather' 
 
-Click on /newbot
+2. Click on /newbot
 
-Give your bot a name and a username and your Done!
+3. Give your bot a name and a username and your Done!
 
-Add your api key in main.py on line 1
+4. Add your api key in main.py on line 1
 
 ```bash
     python main.py
