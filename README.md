@@ -30,11 +30,16 @@ Click on /newbot
 
 Give your bot a name and a username and your Done!
 
-Add your api_key to environment variable and add it to line 12.
-or replace the line with api_key = actual api key
+Add your api key in main.py on line 1
 
 ```bash
     python main.py
 ```
 
+To run this bot on heroku:
 
+1. [heroku](https://github.com/rudranag/Truecaller-Smsbomber_telegram_bot/tree/heroku) (to host this bot on heroku worker dyno)
+2. [heroku_webhook](https://github.com/rudranag/Truecaller-Smsbomber_telegram_bot/tree/heroku_webhook) (bot that uses webhook for heroku)
+
+
+change branch and check the usage provided for each branch
