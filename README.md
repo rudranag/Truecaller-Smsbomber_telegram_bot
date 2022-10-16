@@ -37,9 +37,7 @@ Add your api key in main.py on line 1
 ```
 
 
-
-
-
+<br>
 
 To run this bot on heroku:
 
