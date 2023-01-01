@@ -39,10 +39,3 @@ To get you bot Api Key
 
 <br>
 
-To run this bot on heroku:
-
-1. [heroku](https://github.com/rudranag/Truecaller-Smsbomber_telegram_bot/tree/heroku) (to host this bot on heroku worker dyno)
-2. [heroku_webhook](https://github.com/rudranag/Truecaller-Smsbomber_telegram_bot/tree/heroku_webhook) (bot that uses webhook for heroku)
-
-
-change branch and check the usage provided for each branch
