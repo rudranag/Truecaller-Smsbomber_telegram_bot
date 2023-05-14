@@ -39,7 +39,8 @@ To get you bot Api Key
 
 <br>
 
-## Note
 
 ### here is the production version of this bot [production](https://github.com/rudranag/Truecaller-Smsbomber_telegram_bot/tree/production)
+
+### Note : This version has a database table to store numbers in sha256 for privacy and security, However it doesn't use webhooks and not configured for nginx webserver.
 
