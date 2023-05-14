@@ -40,7 +40,7 @@ To get you bot Api Key
 # For running this bot in a Server
 
 
-## Create Table with sql query
+## Create Table with postgresql query
 
 ```
 CREATE TABLE protected_list ( id serial PRIMARY KEY, chat_id bigint, mobile text NOT NULL );
