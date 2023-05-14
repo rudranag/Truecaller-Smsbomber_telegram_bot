@@ -37,5 +37,19 @@ To get you bot Api Key
 ```
 
 
+## Create Table with sql query
+
+```
+CREATE TABLE protected_list ( id serial PRIMARY KEY, chat_id bigint, mobile text NOT NULL );
+
+```
+
+## Update password for user postgres 
+
+```
+ALTER USER myuser WITH ENCRYPTED PASSWORD 'postgres' PASSWORD 'md5';
+
+```
+
 <br>
 
