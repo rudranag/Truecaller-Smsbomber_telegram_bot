@@ -35,6 +35,9 @@ To get you bot Api Key
 ```bash
     python main.py
 ```
+<br>
+
+# For running this bot in a Server
 
 
 ## Create Table with sql query
