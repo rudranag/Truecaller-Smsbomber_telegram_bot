@@ -37,10 +37,15 @@ To get you bot Api Key
 ```
 <br>
 
-# For running this bot in a Server
+# For running this bot in a Server with Postgres
 
+## Create Database in postgres
+```
+CREATE DATABASE telegram;
 
-## Create Table with postgresql query
+```
+
+## Create Table for saving protected_list of users
 
 ```
 CREATE TABLE protected_list ( id serial PRIMARY KEY, chat_id bigint, mobile text NOT NULL );
